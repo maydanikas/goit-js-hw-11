@@ -69,7 +69,7 @@ const onSearchSubmit = async event => {
   try {
     const response = await pixabayApi.fetchFotosQuery();
     const { data } = response;
-    console.log(response);
+    // console.log(response);
 
     if (data.total === 0) {
       Notiflix.Notify.failure(
