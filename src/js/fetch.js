@@ -7,6 +7,7 @@ export class PixabayApi {
   constructor() {
     this.query = null;
     this.page = 1;
+    this.per_page = 40;
   }
 
   fetchFotosQuery() {
@@ -16,7 +17,7 @@ export class PixabayApi {
         image_type: 'photo',
         orientation: 'horizontal',
         safesearch: 'true',
-        per_page: 40,
+        per_page: this.per_page,
         key: PixabayApi.API_KEY,
         page: this.page,
       },

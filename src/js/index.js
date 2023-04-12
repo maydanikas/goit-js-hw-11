@@ -1,4 +1,4 @@
-import Notiflix from 'notiflix';
+import { Notify } from 'notiflix';
 import { PixabayApi } from './fetch';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
@@ -70,9 +70,10 @@ const onSearchSubmit = async event => {
     const response = await pixabayApi.fetchFotosQuery();
     const { data } = response;
     // console.log(response);
+    console.log(data);
 
     if (data.total === 0) {
-      Notiflix.Notify.failure(
+      Notify.failure(
         'Sorry, there are no images matching your search query. Please try again.'
       );
       galleryEl.innerHTML = '';
@@ -86,7 +87,7 @@ const onSearchSubmit = async event => {
       loadMoreBtn.classList.add('is-hidden');
       return;
     }
-    Notiflix.Notify.success(
+    Notify.success(
       `Hooray! We found ${data.total} images by "${pixabayApi.query}" request`
     );
     // galleryEl.innerHTML = gallerItemRender(data.hits);
@@ -96,7 +97,7 @@ const onSearchSubmit = async event => {
       captionDelay: 250,
     });
   } catch (error) {
-    Notiflix.Notify.failure(error);
+    Notify.failure(error);
   }
 };
 /////////////////
@@ -107,15 +108,16 @@ const onLoadMoreBtnClick = async event => {
   try {
     const response = await pixabayApi.fetchFotosQuery();
     const { data } = response;
+    const totalHits = Math.ceil(data.totalHits / pixabayApi.per_page);
 
     galleryEl.insertAdjacentHTML('beforeend', gallerItemRender(data.hits));
     lightbox.refresh();
 
-    if (pixabayApi.page === data.totalHits) {
+    if (pixabayApi.page === totalHits) {
       loadMoreBtn.classList.add('is-hidden');
     }
   } catch (error) {
-    Notify.failure(error);
+    failure(error);
   }
 };
 
