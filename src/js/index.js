@@ -99,7 +99,7 @@ const onSearchSubmit = async event => {
       captionsData: 'alt',
       captionDelay: 250,
     });
-    if (totalHits === 1) {
+    if (totalHits <= 1) {
       // console.log(loadMoreBtn.classList.contains('is-hidden'));
       loadMoreBtn.classList.add('is-hidden');
     }
