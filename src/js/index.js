@@ -115,6 +115,7 @@ const onLoadMoreBtnClick = async event => {
 
     if (pixabayApi.page === totalHits) {
       loadMoreBtn.classList.add('is-hidden');
+      footerEl.classList.add('is-hidden');
     }
   } catch (error) {
     failure(error);
