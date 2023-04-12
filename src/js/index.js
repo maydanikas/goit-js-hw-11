@@ -15,8 +15,9 @@ const pixabayApi = new PixabayApi();
 ////////////////rendering/////////////////////
 
 const gallerItemRender = data => {
-  loadMoreBtn.classList.remove('is-hidden');
+  // loadMoreBtn.classList.remove('is-hidden');
   footerEl.classList.remove('is-hidden');
+  loadMoreBtn.classList.remove('is-hidden');
 
   return data
     .map(elem => {
@@ -69,10 +70,11 @@ const onSearchSubmit = async event => {
   try {
     const response = await pixabayApi.fetchFotosQuery();
     const { data } = response;
-    // console.log(response);
-    console.log(data);
+    const totalHits = Math.round(data.totalHits / pixabayApi.per_page);
+    // console.log(data);
+    console.log(totalHits);
 
-    if (data.total === 0) {
+    if (data.totalHits === 0) {
       Notify.failure(
         'Sorry, there are no images matching your search query. Please try again.'
       );
@@ -87,15 +89,20 @@ const onSearchSubmit = async event => {
       loadMoreBtn.classList.add('is-hidden');
       return;
     }
+
     Notify.success(
       `Hooray! We found ${data.total} images by "${pixabayApi.query}" request`
     );
-    // galleryEl.innerHTML = gallerItemRender(data.hits);
+
     galleryEl.insertAdjacentHTML('beforeend', gallerItemRender(data.hits));
     lightbox = new SimpleLightbox('.photo-card a', {
       captionsData: 'alt',
       captionDelay: 250,
     });
+    if (totalHits === 1) {
+      // console.log(loadMoreBtn.classList.contains('is-hidden'));
+      loadMoreBtn.classList.add('is-hidden');
+    }
   } catch (error) {
     Notify.failure(error);
   }
